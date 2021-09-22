@@ -1,7 +1,7 @@
 <div class="mb-4 mt-4 row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
   <!-- Aquí listaremos los eventos -->
-  <div class="col" *ngIf="llistaEvents && llistaEvents.length">
-    <div class="card" *ngFor="let evento of llistaEvents">
+  <div class="col" *ngFor="let evento of llistaEvents">
+    <div class="card" *ngIf="llistaEvents && llistaEvents.length">
       <div class="card-body">
         <h4 class="card-title">{{evento.title}}</h4>
         <p class="card-text">{{evento.description}}</p>
