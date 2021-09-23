@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 //import { IEvento } from './evento';
 import { Evento } from '../interface/evento';
+import { EventoService } from '../services/evento.service';
 
 @Component({
   selector: 'app-eventos-show',
@@ -75,6 +76,12 @@ export class EventosShowComponent {
       this.llistaEvents=[...this.llistaEvents];
   }
 
-    constructor() { }
+    constructor(private eventosService: EventoService) {
+
+     }
+
+     ngOnInit(){
+       this.llistaEvents = this.eventosService.getEvento();
+     }
 
 }
