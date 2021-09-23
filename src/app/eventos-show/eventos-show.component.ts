@@ -70,6 +70,11 @@ export class EventosShowComponent {
     });
     }
 
+  borraEvento(ind: number){
+      this.llistaEvents.splice(ind,1);
+      this.llistaEvents=[...this.llistaEvents];
+  }
+
     constructor() { }
 
 }
