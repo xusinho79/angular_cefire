@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Evento } from '../interface/evento';
+import { EventoService } from '../services/evento.service';
 
 @Component({
   selector: 'app-evento-add',
@@ -12,7 +13,13 @@ export class EventoAddComponent {
   @Output() eventAfegit = new EventEmitter<void>();
 
   afegirEvent() {
-    this.eventAfegit.emit();
+
+    this.eventosService.addEvento(this.newEvento).subscribe(
+      (eventos) => (this.eventAfegit.emit()), // Success function
+      (error) => console.error(error), // Error function (optional)
+      () => console.log('Events carregats') // Finally function (optional)
+    );
+    //this.eventAfegit.emit();
   }
 
   changeImage(fileInput: HTMLInputElement) {
@@ -24,7 +31,7 @@ export class EventoAddComponent {
     });
     }
 
-  constructor() { }
+  constructor(private eventosService: EventoService) { }
 
 
 }

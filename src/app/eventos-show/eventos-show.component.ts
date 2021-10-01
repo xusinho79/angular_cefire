@@ -6,82 +6,103 @@ import { EventoService } from '../services/evento.service';
 @Component({
   selector: 'app-eventos-show',
   templateUrl: './eventos-show.component.html',
-  styleUrls: ['./eventos-show.component.css']
+  styleUrls: ['./eventos-show.component.css'],
 })
 export class EventosShowComponent {
-
   //constructor() { }
 
-  llistaEvents : Evento[] = [{title: 'el primer event',
-  image: 'assets/evento1.jpg',
-  date: '2021/04/21',
-  description: 'descripció del primer event',
-  price: 30},
-  {title: 'el segon event',
-    image: 'assets/evento2.jpg',
-    date: '2021/02/14',
-    description: 'descripció del segon event',
-    price: 35}];
-  search="";
+  /*
+  llistaEvents: Evento[] = [
+    {
+      title: 'el primer event',
+      image: 'assets/evento1.jpg',
+      date: '2021/04/21',
+      description: 'descripció del primer event',
+      price: 30,
+    },
+    {
+      title: 'el segon event',
+      image: 'assets/evento2.jpg',
+      date: '2021/02/14',
+      description: 'descripció del segon event',
+      price: 35,
+    },
+  ];
+  */
+  search = '';
+
+  llistaEvents: Evento[] = [{
+    title: '',
+    description: '',
+    image: '',
+    price: 0,
+    date: '',
+  }];
 
   newEvento: Evento = {
     title: '',
     description: '',
     image: '',
     price: 0,
-    date: ''
-    };
+    date: '',
+  };
 
-  orderDate(){
-    this.search="";
-    this.llistaEvents.sort(function(a, b) {
+  orderDate() {
+    this.search = '';
+    this.llistaEvents.sort(function (a, b) {
       var textA = a.date;
       var textB = b.date;
-      return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-  });
+      return textA < textB ? -1 : textA > textB ? 1 : 0;
+    });
   }
 
-  orderPrice(){
-    this.search="";
-    this.llistaEvents.sort(function(a, b) {
+  orderPrice() {
+    this.search = '';
+    this.llistaEvents.sort(function (a, b) {
       var textA = a.price;
       var textB = b.price;
-      return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-  });
+      return textA < textB ? -1 : textA > textB ? 1 : 0;
+    });
   }
 
-  addEvento(){
+  addEvento() {
     this.llistaEvents.push(this.newEvento);
-    let eventoBuit:Evento = {
+    let eventoBuit: Evento = {
       title: '',
       description: '',
       image: '',
       price: 0,
-      date: ''
-      };
+      date: '',
+    };
     this.newEvento = eventoBuit;
   }
 
   changeImage(fileInput: HTMLInputElement) {
-    if (!fileInput.files || fileInput.files.length === 0) { return; }
+    if (!fileInput.files || fileInput.files.length === 0) {
+      return;
+    }
     const reader: FileReader = new FileReader();
     reader.readAsDataURL(fileInput.files[0]);
-    reader.addEventListener('loadend', e => {
-    this.newEvento.image = reader.result as string;
+    reader.addEventListener('loadend', (e) => {
+      this.newEvento.image = reader.result as string;
     });
-    }
-
-  borraEvento(ind: number){
-      this.llistaEvents.splice(ind,1);
-      this.llistaEvents=[...this.llistaEvents];
   }
 
-    constructor(private eventosService: EventoService) {
+  borraEvento(ind: number) {
+    this.llistaEvents.splice(ind, 1);
+    this.llistaEvents = [...this.llistaEvents];
+  }
 
-     }
+  constructor(private eventosService: EventoService) {}
 
-     ngOnInit(){
-       this.llistaEvents = this.eventosService.getEvento();
-     }
+  ngOnInit() {
+    this.eventosService.getEvento().subscribe(
+      (eventos) => (this.llistaEvents = eventos), // Success function
+      (error) => console.error(error), // Error function (optional)
+      () => console.log('Events carregats') // Finally function (optional)
+    );
+
+  }
+
 
 }

@@ -1,25 +1,30 @@
 import { Injectable } from '@angular/core';
 import { Evento } from '../interface/evento';
+import { EventoResponse } from '../interface/evento-response'
+import { Observable } from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventoService {
 
-  constructor() { }
+  private eventoURL = 'http://arturober.com:5003/eventos';
 
-  getEvento(): Evento[] {
-    return [{title: 'el primer event',
-    image: 'assets/evento1.jpg',
-    date: '2021/04/21',
-    description: 'descripció del primer event',
-    price: 30},
-    {title: 'el segon event',
-      image: 'assets/evento2.jpg',
-      date: '2021/02/14',
-      description: 'descripció del segon event',
-      price: 35}];
+  constructor(private http: HttpClient) { }
+
+  getEvento(): Observable<Evento[]> {
+    return this.http.get<{eventos: Evento[]}>(this.eventoURL).pipe(
+    map(response => response.eventos),
+    );
   }
 
-
+  addEvento(evento: Evento): Observable<Evento> {
+  return this.http
+    .post<EventoResponse>(this.eventoURL, evento)
+    .pipe(map((resp) => resp.evento));
+  }
 }
