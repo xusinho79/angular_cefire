@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Evento } from '../interface/evento';
-import { EventoResponse } from '../interface/evento-response'
+import { EventoResponse } from '../interface/evento-response';
+import { EventoDeleteResponse} from '../interface/evento-delete-response';
 import { Observable } from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -14,6 +15,7 @@ export class EventoService {
 
   private eventoURL = 'http://arturober.com:5003/eventos';
 
+
   constructor(private http: HttpClient) { }
 
   getEvento(): Observable<Evento[]> {
@@ -26,5 +28,11 @@ export class EventoService {
   return this.http
     .post<EventoResponse>(this.eventoURL, evento)
     .pipe(map((resp) => resp.evento));
+  }
+
+  deleteEvento(id: number): Observable<EventoDeleteResponse> {
+    return this.http
+    .delete<{identificador: EventoDeleteResponse}>(this.eventoURL+'/'+id)
+    .pipe(map((resp) => resp.identificador));
   }
 }
