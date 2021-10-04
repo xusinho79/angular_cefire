@@ -11,6 +11,11 @@ import { EventoAddComponent } from './evento-add/evento-add.component';
 
 import {HttpClientModule} from '@angular/common/http';
 
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import { EventoService } from './services/evento.service';
+import { AuthInterceptorService} from './services/auth-interceptor.service';
+import { BaseUrlInterceptor } from './interceptors/base-url.interceptor';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,7 +29,13 @@ import {HttpClientModule} from '@angular/common/http';
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+{
+  provide: HTTP_INTERCEPTORS,
+  useClass: BaseUrlInterceptor,
+  multi: true,
+}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

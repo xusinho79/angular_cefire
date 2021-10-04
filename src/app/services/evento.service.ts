@@ -13,7 +13,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 })
 export class EventoService {
 
-  private eventoURL = 'http://arturober.com:5003/eventos';
+  private eventoURL = 'eventos';
 
 
   constructor(private http: HttpClient) { }
